@@ -45,13 +45,17 @@ public class Main {
         JPanel searchRight = new JPanel();
         searchRight.setLayout(new BoxLayout(searchRight, BoxLayout.Y_AXIS));
         searchRight.setBorder(BorderFactory.createTitledBorder("Search"));
+        searchRight.setPreferredSize(new Dimension(150, 10)); // Match inputPanel width, adjust height
 
-        JTextField searchField = new JTextField(); searchField.setMaximumSize(new Dimension(200, 25));
+        JTextField searchField = new JTextField();
+        searchField.setMaximumSize(new Dimension(200, 25)); // Consistent with inputPanel fields
         JButton searchBtn = new JButton("Search");
+        searchBtn.setMaximumSize(new Dimension(100, 25)); // Match field size for consistency
 
-        searchRight.add(new JLabel("Search by Name:"));
+        JLabel searchLabel = new JLabel("Search by Name:");
+        searchRight.add(searchLabel); // Left-aligned by default
         searchRight.add(searchField);
-        searchRight.add(Box.createRigidArea(new Dimension(0, 10)));
+        searchRight.add(Box.createVerticalStrut(5)); // 5-pixel vertical gap like inputPanel
         searchRight.add(searchBtn);
 
         bottomSearchPanel.add(searchRight, BorderLayout.EAST);
