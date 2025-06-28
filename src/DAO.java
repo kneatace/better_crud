@@ -120,6 +120,9 @@ public class DAO {
                 String email = rs.getString("email");
                 String password = rs.getString("password");
 
+                User user = new User(id, name, email, password);
+                users.add(user);
+
                 model.addRow(new Object[]{id, name, email});
             }
 

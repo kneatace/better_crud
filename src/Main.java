@@ -132,7 +132,6 @@ public class Main {
     }
 
     private static void updateTable(DefaultTableModel model) {
-        model.setRowCount(0);
         List<User> users = DAO.getAllUsers(); // You must implement this
         for (User u : users) {
             model.addRow(new Object[]{u.getId(), u.getName(), u.getEmail()});
