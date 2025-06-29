@@ -1,6 +1,6 @@
 import javax.swing.*;
+import java.sql.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,7 +30,6 @@ public class Main {
         inputPanel.add(new JLabel("Email:")); inputPanel.add(emailField);
         inputPanel.add(Box.createVerticalStrut(5));
         inputPanel.add(new JLabel("Password:")); inputPanel.add(passField);
-
 
         // ===== CENTER Table =====
         String[] columns = {"ID", "Name", "Email"};
@@ -81,14 +80,13 @@ public class Main {
                 }
             }
         });
-
-
         // ===== Bottom Buttons (on a separate panel) =====
         JPanel buttonPanel = new JPanel();
         JButton addBtn = new JButton("Add");
         JButton updateBtn = new JButton("Update");
         JButton deleteBtn = new JButton("Delete");
         buttonPanel.add(addBtn);
+
         addBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -102,6 +100,8 @@ public class Main {
                             "User created successfully!",
                             "Success",
                             JOptionPane.INFORMATION_MESSAGE);
+                   updateTable(tableModel);
+                   clearFields(nameField, emailField, passField);
                 } else {
                     JOptionPane.showMessageDialog(null,
                             "Failed to create user. Please try again.",
@@ -113,6 +113,47 @@ public class Main {
         });
         buttonPanel.add(updateBtn);
         buttonPanel.add(deleteBtn);
+        // Add action listener for Delete button
+        deleteBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = table.getSelectedRow();
+                if (selectedRow == -1) {
+                    JOptionPane.showMessageDialog(frame,
+                            "Please select a user to delete.",
+                            "No Selection",
+                            JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
+                int userId = (int) tableModel.getValueAt(selectedRow, 0); // ID is in column 0
+
+                int confirm = JOptionPane.showConfirmDialog(frame,
+                        "Are you sure you want to delete the user with ID: " + userId + "?",
+                        "Confirm Deletion",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.WARNING_MESSAGE);
+
+                if (confirm == JOptionPane.YES_OPTION) {
+
+                        boolean deleted = DAO.deleteUser(userId);
+                        if (deleted) {
+                            tableModel.removeRow(selectedRow);
+                            JOptionPane.showMessageDialog(frame,
+                                    "User with ID " + userId + " deleted successfully.",
+                                    "Success",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                           clearFields(nameField, emailField, passField); // Clear input fields
+                        } else {
+                            JOptionPane.showMessageDialog(frame,
+                                    "Failed to delete user with ID " + userId + ".",
+                                    "Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+
+                }
+            }
+        });
 
         // Add that under the table
         frame.add(buttonPanel, BorderLayout.PAGE_END);
@@ -136,10 +177,18 @@ public class Main {
     }
 
     private static void updateTable(DefaultTableModel model) {
+        model.setRowCount(0);
         List<User> users = DAO.getAllUsers(); // You must implement this
         for (User u : users) {
             model.addRow(new Object[]{u.getId(), u.getName(), u.getEmail()});
         }
     }
+    private static void clearFields(JTextField name, JTextField email, JTextField pass) {
+        name.setText("");
+        email.setText("");
+        pass.setText("");
+    }
 
 }
+
+

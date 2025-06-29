@@ -48,19 +48,22 @@ public class DAO {
         return null;
     }
     public static boolean deleteUser(int id) {
-        String sql = "DELETE FROM table WHERE id = ?";
+        String sql = "DELETE FROM users_tb WHERE id = ?";
 
         try (Connection conn = DataBaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, id);
-            return stmt.executeUpdate() > 0;
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
 
         } catch (SQLException e) {
             System.err.println("Error deleting user: " + e.getMessage());
             return false;
         }
     }
+
+
 
     public static boolean updateUser(int id, String name, String email, String password) {
         String sql = "UPDATE table SET name = ?, email = ?, password = ? WHERE id = ?";
