@@ -23,30 +23,7 @@ public class DAO {
         }
 
     }
-    public static User getUserById(int id) {
-        String sql = "SELECT * FROM table WHERE id = ?";
 
-        try (Connection conn = DataBaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setInt(1, id);
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                return new User(
-                        rs.getInt("id"),
-                        rs.getString("name"),
-                        rs.getString("email"),
-                        rs.getString("password")
-                );
-            }
-
-        } catch (SQLException e) {
-            System.err.println("Error retrieving user: " + e.getMessage());
-        }
-
-        return null;
-    }
     public static boolean deleteUser(int id) {
         String sql = "DELETE FROM users_tb WHERE id = ?";
 
@@ -66,7 +43,7 @@ public class DAO {
 
 
     public static boolean updateUser(int id, String name, String email, String password) {
-        String sql = "UPDATE table SET name = ?, email = ?, password = ? WHERE id = ?";
+        String sql = "UPDATE users_tb SET name = ?, email = ?, password = ? WHERE id = ?";
 
         try (Connection conn = DataBaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -134,6 +111,22 @@ public class DAO {
         }
 
         return users;
+    }
+
+    public static boolean verifyPassword(int userId, String inputPassword) {
+        String sql = "SELECT password FROM users_tb WHERE id = ?";
+        try (Connection conn = DataBaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                String actualPassword = rs.getString("password");
+                return actualPassword.equals(inputPassword);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 }

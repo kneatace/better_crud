@@ -154,6 +154,58 @@ public class Main {
                 }
             }
         });
+        //updateButton action
+        updateBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = table.getSelectedRow();
+                if (selectedRow == -1) {
+                    JOptionPane.showMessageDialog(frame,
+                            "Please select a user to update.",
+                            "No Selection",
+                            JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
+                int userId = (int) tableModel.getValueAt(selectedRow, 0);
+                String newName = nameField.getText().trim();
+                String newEmail = emailField.getText().trim();
+                String inputPass = passField.getText().trim();
+
+                if (newName.isEmpty() || newEmail.isEmpty() || inputPass.isEmpty()) {
+                    JOptionPane.showMessageDialog(frame,
+                            "All fields must be filled out.",
+                            "Input Error",
+                            JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
+                //Verify password
+                if (!DAO.verifyPassword(userId, inputPass)) {
+                    JOptionPane.showMessageDialog(frame,
+                            "Password does not match our records. Update denied.",
+                            "Authentication Failed",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                //If password matches, allow update
+                boolean updated = DAO.updateUser(userId, newName, newEmail, inputPass);
+                if (updated) {
+                    JOptionPane.showMessageDialog(frame,
+                            "User updated successfully.",
+                            "Success",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    updateTable(tableModel); // refresh table
+                    clearFields(nameField, emailField, passField);
+                } else {
+                    JOptionPane.showMessageDialog(frame,
+                            "Failed to update user.",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
 
         // Add that under the table
         frame.add(buttonPanel, BorderLayout.PAGE_END);
