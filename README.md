@@ -2,7 +2,8 @@ User Management System – Java Swing + MySQL:
 
 A simple desktop-based CRUD (Create, Read, Update, Delete) application to manage users using Java Swing and MySQL.
 
--Features
+-Features:
+
   ->Add new users (Name, Email, Password)
 
   ->Search users by name
@@ -13,14 +14,16 @@ A simple desktop-based CRUD (Create, Read, Update, Delete) application to manage
 
   ->Interactive GUI with JTable
 
--Requirements
+-Requirements:
+
   ->Java JDK 8 or higher
 
   ->MySQL server (recommended: XAMPP)
 
   ->JDBC Driver (included by default in most IDEs)
 
--Setup
+-Setup:
+
   ->Start MySQL via XAMPP
   
   ->Start Apache via XAMPP
