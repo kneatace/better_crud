@@ -1,5 +1,4 @@
 import javax.swing.*;
-import java.sql.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -39,8 +38,8 @@ public class Main {
         frame.add(scrollPane, BorderLayout.CENTER);
         updateTable(tableModel); // fetch users into table
 
-        // ===== BOTTOM-RIGHT Search Panel =====
-        JPanel bottomSearchPanel = new JPanel(new BorderLayout());
+        // ===== TOP-RIGHT Search Panel =====
+        JPanel topSearchPanel = new JPanel(new BorderLayout());
         JPanel searchRight = new JPanel();
         searchRight.setLayout(new BoxLayout(searchRight, BoxLayout.Y_AXIS));
         searchRight.setBorder(BorderFactory.createTitledBorder("Search"));
@@ -57,8 +56,8 @@ public class Main {
         searchRight.add(Box.createVerticalStrut(5)); // 5-pixel vertical gap like inputPanel
         searchRight.add(searchBtn);
 
-        bottomSearchPanel.add(searchRight, BorderLayout.EAST);
-        frame.add(bottomSearchPanel, BorderLayout.NORTH);
+        topSearchPanel.add(searchRight, BorderLayout.EAST);
+        frame.add(topSearchPanel, BorderLayout.NORTH);
         searchBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -87,6 +86,7 @@ public class Main {
         JButton deleteBtn = new JButton("Delete");
         buttonPanel.add(addBtn);
 
+        //add button action starts
         addBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -111,9 +111,10 @@ public class Main {
 
             }
         });
+        //add button action listener ends
         buttonPanel.add(updateBtn);
         buttonPanel.add(deleteBtn);
-        // Add action listener for Delete button
+        //Delete button action listener starts
         deleteBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -154,7 +155,9 @@ public class Main {
                 }
             }
         });
-        //updateButton action
+        //delete button action listener ends
+
+        //updateButton action starts
         updateBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -206,15 +209,17 @@ public class Main {
                 }
             }
         });
+        //update/edit button action ends
 
         // Add that under the table
         frame.add(buttonPanel, BorderLayout.PAGE_END);
-
+        //wrap the input and search panel
         JPanel topContainerPanel = new JPanel(new BorderLayout());
         topContainerPanel.add(inputPanel, BorderLayout.WEST);
         topContainerPanel.add(searchRight, BorderLayout.EAST); // directly add searchRight
 
         frame.add(topContainerPanel, BorderLayout.NORTH);
+
         // === Optional: Fill inputs when table row is selected ===
         table.getSelectionModel().addListSelectionListener(event -> {
             int row = table.getSelectedRow();
