@@ -26,13 +26,16 @@ A simple desktop-based CRUD (Create, Read, Update, Delete) application to manage
   ->Start Apache via XAMPP
   
   ->Create a crud database with a users_tb table:
+    
     Code:
+    
     CREATE TABLE users_tb (
       id INT AUTO_INCREMENT PRIMARY KEY,
       name VARCHAR(100),
       email VARCHAR(100),
       password VARCHAR(100)
     );
+  
   ->Update database credentials in DataBaseConnection.java.
 
 -Run Main.java from your IDE.
