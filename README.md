@@ -1,4 +1,5 @@
-User Management System – Java Swing + MySQL
+User Management System – Java Swing + MySQL:
+
 A simple desktop-based CRUD (Create, Read, Update, Delete) application to manage users using Java Swing and MySQL.
 
 -Features
